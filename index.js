@@ -21,11 +21,12 @@ app.get('/api', (req, res) => {
 
 io.on('connection', (socket) => {
   socket.on('channel_1', (msg) => {
-    socket.broadcast.emit('channel_1', {
+    const data = {
       message: msg.message,
       id: msg.id,
       is_me: false
-    });
+    }
+    socket.broadcast.emit('channel_1', data);
   });
 });
 
