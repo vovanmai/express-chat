@@ -27,6 +27,7 @@ io.on('connection', (socket) => {
       is_me: false
     }
     socket.broadcast.emit('channel_1', data);
+    console.log(data)
   });
 });
 
