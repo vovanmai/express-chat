@@ -20,13 +20,13 @@ app.get('/api', (req, res) => {
 
 
 io.on('connection', (socket) => {
-  socket.on('channel_1', (msg) => {
+  socket.on('channel', (msg) => {
     const data = {
       message: msg.message,
       id: msg.id,
       is_me: false
     }
-    socket.broadcast.emit('channel_1', data);
+    socket.broadcast.emit('channel', data);
     console.log(data)
   });
 });
