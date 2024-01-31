@@ -7,8 +7,9 @@ module.exports = function (server) {
     }
   });
   io.on('connection', (socket) => {
+    console.log('connection');
     socket.on("disconnect", (reason, details) => {
-      console.log('disconnect');
+      // console.log('disconnect');
     });
 
     socket.on('channel', (data) => {
@@ -18,13 +19,18 @@ module.exports = function (server) {
         is_me: false,
         channel_id: data.channel_id,
       }
-      const channel = `channel_${data.channel_id}`
+      const channel = `channel_${dataEmit.channel_id}`
       console.log(dataEmit)
       socket.broadcast.emit(channel, dataEmit);
+      socket.broadcast.emit(`typing_channel_${dataEmit.channel_id}`, false);
     });
 
     socket.on('chat', (data) => {
       socket.emit('chat', data);
+    });
+
+    socket.on('typing', (data) => {
+      socket.broadcast.emit(`typing_channel_${data.channel_id}`, data.is_typing);
     });
   });
 
