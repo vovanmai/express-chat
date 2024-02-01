@@ -9,10 +9,10 @@ module.exports = function (server) {
   io.on('connection', (socket) => {
     console.log('connection');
     socket.on("disconnect", (reason, details) => {
-      // console.log('disconnect');
+      console.log('disconnect');
     });
 
-    socket.on('channel', (data) => {
+    socket.on('channel', (data,sendAck) => {
       const dataEmit = {
         message: data.message,
         id: data.id,
@@ -27,6 +27,16 @@ module.exports = function (server) {
 
     socket.on('chat', (data) => {
       socket.emit('chat', data);
+    });
+
+    socket.on('join_channel', (data) => {
+      const channelName = data.channel_name
+      socket.join(channelName);
+    });
+
+    socket.on('leave_channel', (data) => {
+      const channelName = data.channel_name
+      socket.leave(channelName);
     });
 
     socket.on('typing', (data) => {
