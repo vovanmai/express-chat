@@ -12,7 +12,7 @@ app.use(bodyParser.raw());
 
 
 app.use(cors())
-const io = socket(server)
+socket(server)
 
 
 app.get('/', (req, res) => {
