@@ -29,8 +29,16 @@ module.exports = function (server) {
       socket.emit('chat', data);
     });
 
+    socket.on('send_message', (data) => {
+      const channelName = `channel_${data.channel_id}`
+      socket.in(channelName).emit('receive_message', data)
+    });
+
     socket.on('join_channel', (data) => {
       const channelName = data.channel_name
+      // for (let i = 1; i <= 1000000; i++) {
+      //   console.log(i)
+      // }
       socket.join(channelName);
     });
 

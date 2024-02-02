@@ -26,25 +26,26 @@ app.post('/api/messages', async (req, res) => {
     is_me: false,
     channel_id: req.body.channel_id,
   }
-  const socketId = req.body.socket_id
+  // const socketId = req.body.socket_id
+  //
+  // const channel = `channel_${dataEmit.channel_id}`
+  //
+  // const socketList = await io.in(channel).fetchSockets()
+  //
+  // for (const socketItem of socketList) {
+  //   if (socketItem.id !== socketId) {
+  //     socketItem.emit('message', dataEmit)
+  //   }
+  // }
 
-  const channel = `channel_${dataEmit.channel_id}`
-
-  const socketList = await io.in(channel).fetchSockets()
-
-  for (const socketItem of socketList) {
-    if (socketItem.id !== socketId) {
-      socketItem.emit('message', dataEmit)
-    }
-  }
-
-  res.json({ success: true })
+  res.json({ success: true, data: dataEmit })
 });
 
 app.get('/api/messages', (req, res) => {
   res.json({ success: true })
 });
 
-server.listen(3007, () => {
-  console.log("http://localhost:3007");
+const PORT = process.env.PORT || 3007;
+server.listen(PORT, () => {
+  console.log("http://localhost:" + PORT);
 });
