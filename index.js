@@ -2,15 +2,16 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
-const multer = require('multer');
+var multer = require('multer');
+var upload = multer();
+app.use(upload.array());
 const socket = require("./socket");
 const cors = require('cors')
-const bodyParser = require('body-parser');
+let bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 require('dotenv').config();
-
 
 const db = require("./models/index");
 
@@ -18,17 +19,15 @@ db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Db');
 });
 
-
 app.use(cors())
 socket(server)
-
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
 require('./routes/user.routes')(app);
-
+require('./routes/channel.routes')(app);
 
 app.post('/api/messages', async (req, res) => {
   const dataEmit = {
@@ -55,9 +54,6 @@ app.post('/api/messages', async (req, res) => {
 app.get('/api/messages', (req, res) => {
   res.json({ success: true })
 });
-
-console.log(process.env.TZ)
-console.log(new Date().toString())
 
 const PORT = process.env.PORT || 3007;
 server.listen(PORT, () => {
