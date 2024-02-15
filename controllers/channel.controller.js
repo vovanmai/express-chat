@@ -3,8 +3,13 @@ const Channel = db.channel;
 
 exports.list = async (req, res) => {
   try {
-    console.log(req.user)
-    const channels = await Channel.findAll();
+    let channels = []
+    for (let i = 1; i<= 250; i++) {
+      channels.push({
+        id: i,
+        name: "Channel " + i
+      })
+    }
 
     res.json({
       data: channels

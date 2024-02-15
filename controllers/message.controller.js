@@ -12,9 +12,9 @@ exports.store = async (req, res) => {
       message: req.body.message,
       sent_at: new Date(),
     }
-    await Message.create(data)
+    const response = await Message.create(data)
     res.json({
-      data: data
+      data: response.dataValues
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -25,13 +25,13 @@ exports.index = async (req, res) => {
   try {
     const channelId = req.params.id
 
-
     const { limit, offset } = getPagination(req.query.page, req.query.per_page)
     console.log(limit, offset)
     const messages = await Message.findAll({
       where: {
         channel_id: channelId
       },
+      include: ["user"],
       order: [
         ['id', 'ASC'],
       ],

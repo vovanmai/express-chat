@@ -27,4 +27,9 @@ db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.channel = require("../models/channel.model.js")(sequelize, Sequelize);
 db.message = require("../models/message.model.js")(sequelize, Sequelize);
 
+db.message.belongsTo(db.user, {
+  foreignKey: "user_id",
+  as: "user",
+});
+
 module.exports = db;
