@@ -13,8 +13,10 @@ exports.store = async (req, res) => {
       sent_at: new Date(),
     }
     const response = await Message.create(data)
+    let result = response.dataValues
+    result.user = req.user
     res.json({
-      data: response.dataValues
+      data: result
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

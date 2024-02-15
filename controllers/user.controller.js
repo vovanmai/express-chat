@@ -5,7 +5,6 @@ const config = require('../config/auth.config')
 
 exports.signup = async (req, res) => {
   try {
-    console.log(req.body)
     const username = req.body.username
     const data = {
       username: username

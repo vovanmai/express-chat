@@ -14,6 +14,7 @@ module.exports = function (server) {
     });
 
     socket.on('send_message', (data) => {
+      console.log(data)
       const channelName = `channel_${data.channel_id}`
       console.log('send_message: ' + channelName)
       console.log('=============================')
