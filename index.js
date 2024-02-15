@@ -14,8 +14,7 @@ app.use(bodyParser.raw());
 require('dotenv').config();
 
 const db = require("./models/index");
-
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({force: process.env.DB_FORCE === '1'}).then(() => {
   console.log('Drop and Resync Db');
 });
 
@@ -28,6 +27,7 @@ app.get('/', (req, res) => {
 
 require('./routes/user.routes')(app);
 require('./routes/channel.routes')(app);
+require('./routes/message.routes')(app);
 
 app.post('/api/messages', async (req, res) => {
   const dataEmit = {
