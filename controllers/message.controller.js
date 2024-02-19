@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { getPagination } = require('../helpers/common');
 
 const db = require("../models");
@@ -28,14 +29,21 @@ exports.index = async (req, res) => {
     const channelId = req.params.id
 
     const { limit, offset } = getPagination(req.query.page, req.query.per_page)
-    console.log(limit, offset)
+
+    let where = {
+      channel_id: channelId
+    }
+    if (req.query.min_id) {
+      where.id = {
+        [Op.lt]: req.query.min_id
+      }
+    }
+
     const messages = await Message.findAll({
-      where: {
-        channel_id: channelId
-      },
+      where: where,
       include: ["user"],
       order: [
-        ['id', 'ASC'],
+        ['id', 'DESC'],
       ],
       limit: limit,
       offset: offset,
