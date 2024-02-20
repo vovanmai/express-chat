@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 require('dotenv').config();
+const Joi = require('joi');
 
 const db = require("./models/index");
 db.sequelize.sync({force: process.env.DB_FORCE === '1'}).then(() => {
@@ -53,6 +54,28 @@ app.post('/api/messages', async (req, res) => {
 
 app.get('/api/messages', (req, res) => {
   res.json({ success: true })
+});
+app.get('/api/test', async (req, res) => {
+  const schema = Joi.object({
+    a: Joi.string()
+      .required()
+      .min(5)
+      .label('AAAA')
+      .messages({
+        'string.base': '1212'
+      }),
+    b: Joi.string()
+      .required(),
+  })
+  const { error } = schema.validate({a: ''}, {abortEarly: false});
+  res.json({ error: error })
+
+  // try {
+  //
+  // }
+  // catch (err) {
+  //
+  // }
 });
 
 const PORT = process.env.PORT || 3007;

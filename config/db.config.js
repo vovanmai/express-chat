@@ -3,6 +3,7 @@ module.exports = {
   USER: process.env.DB_USERNAME,
   PASSWORD: process.env.DB_PASSWORD,
   DB: process.env.DB_NAME,
+  collation: 'utf8_unicode_ci',
   dialect: "mysql",
   port: process.env.DB_PORT,
   timezone: process.env.TZ,
