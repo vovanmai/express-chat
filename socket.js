@@ -29,15 +29,19 @@ module.exports = function (server) {
       const numberInRoom = (await io.in(channelName).fetchSockets()).length
       console.log('numberInRoom: ' + numberInRoom)
       console.log('=============================')
+      socket.in(channelName).emit('user-just-joined', {user: data.user})
       io.in(channelName).emit('number-user-in-room', numberInRoom)
     });
 
-    socket.on('leave_channel', async (channelName) => {
-      console.log('leave_channel: ' + channelName)
+    socket.on('leave_channel', async (data) => {
+      const {channel_name, user} = data
+      console.log(channel_name, user)
+      console.log('leave_channel: ' + channel_name)
       console.log('=============================')
-      socket.leave(channelName);
-      const numberInRoom = (await io.in(channelName).fetchSockets()).length
-      io.in(channelName).emit('number-user-in-room', numberInRoom)
+      socket.leave(channel_name);
+      const numberInRoom = (await io.in(channel_name).fetchSockets()).length
+      io.in(channel_name).emit('number-user-in-room', numberInRoom)
+      io.in(channel_name).emit('user-just-leave', {user: user})
     });
 
     socket.on('typing', (data) => {
