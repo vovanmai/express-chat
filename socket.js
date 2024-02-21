@@ -35,7 +35,6 @@ module.exports = function (server) {
 
     socket.on('leave_channel', async (data) => {
       const {channel_name, user} = data
-      console.log(channel_name, user)
       console.log('leave_channel: ' + channel_name)
       console.log('=============================')
       socket.leave(channel_name);
@@ -49,6 +48,11 @@ module.exports = function (server) {
       console.log('typing: ' + channelName)
       console.log('=============================')
       socket.broadcast.emit(`typing_channel_${data.channel_id}`, data.is_typing);
+    });
+
+    socket.on('remove-all-message', (data) => {
+      const channelName = data.channel_name
+      socket.in(channelName).emit(`remove-all-message`)
     });
   });
 
