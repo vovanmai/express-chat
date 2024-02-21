@@ -12,4 +12,9 @@ module.exports = function(app) {
     [authJwt.verifyToken],
     controller.index
   );
+  app.post(
+    "/api/channels/:id/delete-all",
+    [authJwt.verifyToken],
+    controller.deleteAll
+  );
 };

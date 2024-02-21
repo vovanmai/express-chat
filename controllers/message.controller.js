@@ -59,3 +59,32 @@ exports.index = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.deleteAll = async (req, res) => {
+  try {
+    const channelId = req.params.id
+
+    // const channel = await Message.findOne({
+    //   where: {
+    //     channel_id: channelId
+    //   }
+    // })
+    //
+    //
+    // if (!channel) {
+    //   return res.status(404).json({ message: "channel is not found" });
+    // }
+
+    await Message.destroy({
+      where: {
+        channel_id: channelId
+      },
+    });
+
+    res.json({
+      message: 'Delete all successfully.'
+    });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};

@@ -1,5 +1,4 @@
 const db = require("../models");
-const Channel = db.channel;
 
 exports.list = async (req, res) => {
   try {
