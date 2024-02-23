@@ -14,7 +14,6 @@ module.exports = function (server) {
     });
 
     socket.on('send_message', (data) => {
-      console.log(data)
       const channelName = `channel_${data.channel_id}`
       console.log('send_message: ' + channelName)
       console.log('=============================')
@@ -40,7 +39,7 @@ module.exports = function (server) {
       socket.leave(channel_name);
       const numberInRoom = (await io.in(channel_name).fetchSockets()).length
       io.in(channel_name).emit('number-user-in-room', numberInRoom)
-      io.in(channel_name).emit('user-just-leave', {user: user})
+      socket.in(channel_name).emit('user-just-leave', {user: user})
     });
 
     socket.on('typing', (data) => {

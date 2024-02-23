@@ -30,10 +30,6 @@ exports.index = async (req, res) => {
 
     const { limit, offset } = getPagination(req.query.page, req.query.per_page)
 
-    // for (let i = 0; i <= 3000000000; i++) {
-    //
-    // }
-
     let where = {
       channel_id: channelId
     }

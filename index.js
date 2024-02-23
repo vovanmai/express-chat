@@ -2,9 +2,6 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
-var multer = require('multer');
-var upload = multer();
-app.use(upload.array());
 const socket = require("./socket");
 const cors = require('cors')
 let bodyParser = require('body-parser');
@@ -13,6 +10,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 require('dotenv').config();
 const Joi = require('joi');
+const upload = require("./middleware/upload");
+app.use("/uploads", express.static("uploads"));
 
 const db = require("./models/index");
 db.sequelize.sync({force: process.env.DB_FORCE === '1'}).then(() => {
@@ -76,6 +75,9 @@ app.get('/api/test', async (req, res) => {
   // catch (err) {
   //
   // }
+});
+app.post('/api/upload-file', upload.single("file"), (req, res) => {
+  res.json({ data: req.file })
 });
 
 const PORT = process.env.PORT || 3007;
