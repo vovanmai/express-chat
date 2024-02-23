@@ -12,9 +12,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
       allowNull: false,
     },
+    type: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     message: {
       type: Sequelize.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
   });
 

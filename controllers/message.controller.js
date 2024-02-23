@@ -3,18 +3,33 @@ const { getPagination } = require('../helpers/common');
 
 const db = require("../models");
 const Message = db.message;
+const File = db.file;
 
 exports.store = async (req, res) => {
   try {
     const channelId = req.params.id
-    const data = {
+    const type = req.body.type
+    console.log(type)
+    let data = {
       channel_id: channelId,
       user_id: req.user.id,
-      message: req.body.message,
       sent_at: new Date(),
+      type: type,
+      message: type === 'text' ? req.body.message : null
     }
-    const response = await Message.create(data)
-    let result = response.dataValues
+    const message = await Message.create(data)
+    let result = message.dataValues
+
+    if (type === 'image') {
+      const images = req.body.images.map((item) => {
+        return {
+          path: item,
+          message_id: result.id
+        }
+      })
+      const files = await File.bulkCreate(images);
+      console.log(files)
+    }
     result.user = req.user
     res.json({
       data: result

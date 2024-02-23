@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+const { v4: uuidv4 } = require('uuid');
 
 const imageFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -14,8 +15,7 @@ var storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    console.log(path.extname(file.originalname))
-    cb(null, `${Date.now()}-bezkoder-${file.originalname}`);
+    cb(null, `${uuidv4()}${path.extname(file.originalname)}`);
   },
 });
 

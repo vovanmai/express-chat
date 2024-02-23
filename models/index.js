@@ -28,10 +28,15 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.channel = require("../models/channel.model.js")(sequelize, Sequelize);
 db.message = require("../models/message.model.js")(sequelize, Sequelize);
+db.file = require("../models/file.model.js")(sequelize, Sequelize);
 
 db.message.belongsTo(db.user, {
   foreignKey: "user_id",
   as: "user",
+});
+db.message.hasMany(db.file, {
+  foreignKey: "message_id",
+  as: "files",
 });
 
 module.exports = db;

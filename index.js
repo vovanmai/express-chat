@@ -50,6 +50,7 @@ app.post('/api/messages', async (req, res) => {
 
   res.json({ success: true, data: dataEmit })
 });
+const authJwt = require('./middleware/authJwt')
 
 app.get('/api/messages', (req, res) => {
   res.json({ success: true })
@@ -68,15 +69,8 @@ app.get('/api/test', async (req, res) => {
   })
   const { error } = schema.validate({a: ''}, {abortEarly: false});
   res.json({ error: error })
-
-  // try {
-  //
-  // }
-  // catch (err) {
-  //
-  // }
 });
-app.post('/api/upload-file', upload.single("file"), (req, res) => {
+app.post('/api/upload-file', [authJwt.verifyToken, upload.single("file")], (req, res) => {
   res.json({ data: req.file })
 });
 
